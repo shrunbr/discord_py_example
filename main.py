@@ -13,7 +13,6 @@ intents.message_content = True
 activity = discord.Game(name="with myself | !help")
 bot = commands.Bot(command_prefix='!', intents=intents, activity=activity)
 bot_token = "<TOKEN>"
-test = "test"
 
 #Important Variables
 cwd = os.getcwd()
