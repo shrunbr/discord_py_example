@@ -2,6 +2,7 @@
 import asyncio
 import discord
 import os
+import yaml
 from discord.ext import commands
 
 #Intent setup
@@ -9,31 +10,34 @@ intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 
+# Parse config.yaml
+config = yaml.safe_load(open('config.yaml'))
+
 #Set bot prefix
 activity = discord.Game(name="with myself | !help")
 bot = commands.Bot(command_prefix='!', intents=intents, activity=activity)
-bot_token = "<TOKEN>"
+bot_token = config['config']['token']
 
 #Important Variables
 cwd = os.getcwd()
 
 #Load cog command
 @bot.command(hidden=True)
-@commands.has_permissions(administrator=True)
+@commands.is_owner()
 async def load(ctx, extension):
     await bot.load_extension(f'cogs.{extension}')
     await ctx.send(f'{extension} has been loaded')
 
 #Unload cog command
 @bot.command(hidden=True)
-@commands.has_permissions(administrator=True)
+@commands.is_owner()
 async def unload(ctx, extension):
     await bot.unload_extension(f'cogs.{extension}')
     await ctx.send(f'{extension} has been unloaded')
 
 #Reload cog command
 @bot.command(hidden=True)
-@commands.has_permissions(administrator=True)
+@commands.is_owner()
 async def reload(ctx, extension):
     await bot.unload_extension(f'cogs.{extension}')
     await bot.load_extension(f'cogs.{extension}')
